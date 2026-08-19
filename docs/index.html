@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WordWeight</title>
+</head>
+<body>
+    <h1>WordWeight</h1>
+    <h2>A project by Adam Gillion</h2>
+    <h2>What is WordWeight</h2>
+    <p>Work In progress</p>
+    <h2>Download</h2>
+    <p>Work In progress</p>
+    <hr>
+    <h2>Demo</h2>
+    <p>Enter two strings to compare their similarity.</p>
+    <form id="wordWeightForm">
+        <label for="firstString">First string:</label>
+        <br>
+        <input type="text" id="firstString" name="firstString" required>
+        <br><br>
+        <label for="secondString">Second string:</label>
+        <br>
+        <input type="text" id="secondString" name="secondString" required>
+        <br><br>
+        <button type="submit">Calculate Score</button>
+    </form>
+    <hr>
+    <div id="results">
+        <h2>Results</h2>
+        <p>Average Score: <strong id="averageScore">-</strong></p>
+        <p>Similarity: <strong id="percentage">-</strong>%</p>
+    </div>
+    <script>
+        const characters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ' '];
+        function calculateScore(string1, string2) {
+            let score = 0;
+            const maxLength = Math.max(string1.length, string2.length);
+            for (let i = 0; i < maxLength; i++) {
+                if (i >= string1.length || i >= string2.length) {
+                    score += 26;
+                } else {
+                    const index1 = characters.indexOf(string1[i]);
+                    const index2 = characters.indexOf(string2[i]);
+                    score += Math.abs(index1 - index2);
+                }
+            }
+            if (maxLength === 0) {
+                return {averageScore: 0, percentage: 100};
+            }
+            const averageScore = Math.floor(score / maxLength);
+            const percentage = 100 - Math.floor(averageScore * 100 / 26);
+            return {averageScore, percentage};
+        }
+
+        document.getElementById("wordWeightForm").addEventListener("submit", function(event) {
+          event.preventDefault();
+          const firstString = document.getElementById("firstString").value.toLowerCase();
+          const secondString = document.getElementById("secondString").value.toLowerCase();
+          const result = calculateScore(firstString, secondString);
+          document.getElementById("averageScore").textContent = result.averageScore;
+          document.getElementById("percentage").textContent = result.percentage;
+        });
+    </script>
+</body>
+</html>
